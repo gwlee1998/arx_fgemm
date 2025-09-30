@@ -1,0 +1,8 @@
+`default_nettype wire
+`include "timescale.vh"
+module OptimizationBarrier_42(
+  input  [2:0] io_x,
+  output [2:0] io_y
+);
+  assign io_y = io_x;
+endmodule

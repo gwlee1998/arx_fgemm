@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<rvx_path_config>
+  <home_path>/home/gwlee/arx_fgemm</home_path>
+  <devkit_path>None</devkit_path>
+  <python3_cmd>/usr/bin/python3.9</python3_cmd>
+  <utility_path>/home/gwlee/arx_fgemm/rvx_util</utility_path>
+  <env_path>/home/gwlee/arx_fgemm/rvx_devkit/env</env_path>
+  <windows_binary_path>None</windows_binary_path>
+  <local_setup_path>/home/gwlee/arx_fgemm/local_setup</local_setup_path>
+  <gui_path>/home/gwlee/arx_fgemm/local_setup/gui</gui_path>
+  <ocd_path>/home/gwlee/arx_fgemm/local_setup/ocd</ocd_path>
+</rvx_path_config>

@@ -1,0 +1,2 @@
+https://github.com/chipsalliance/rocket-chip.git
+44b0b82
