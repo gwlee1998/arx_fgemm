@@ -22,7 +22,7 @@ module dequantize_elem_opt #(
     
     // Step 1: acc * scale_mant
     wire [47:0] prod = acc_abs * scale_mant ;  // 32 + 16
-    wire [63:0] prod_cor = (prod * 16'd60773);
+    wire [63:0] prod_cor = (prod * 16'd64073);
     wire [30:0] scaled = prod_cor >> 33;
     
     reg [4:0] msb_pos;

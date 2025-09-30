@@ -167,31 +167,42 @@ void dca_matrix_qgemm_hwinfo_elaborate(dca_matrix_qgemm_hwpara_t* hwpara, dca_ma
 	hwinfo->wait_dequant = dca_qgemm_wait_dequant;
 }
 
+static void request_quantize(dca_matrix_qgemm_hwinfo_t* hwinfo, dca_matrix_qgemm_inst_t* inst)
+{
+	mmiox1_inst_push(hwinfo->mmiox_info, inst, 1, 0);
+}
+
+static void request_dequant(dca_matrix_qgemm_hwinfo_t* hwinfo)
+{
+	uint32_t req_dequant[1] = {0x1};
+	mmiox1_input_push(hwinfo->mmiox_info, req_dequant, 1);
+}
+
 ervp_task_wait_fx_t dca_matrix_qgemm16x16(ervp_mop_mapping_t *mop_mapping, const dca_matrix_qgemm_hwinfo_t* const hwinfo, const ErvpMatrixInfo *mx_info, const ErvpMatrixInfo *mw_info, ErvpMatrixInfo *mo_info, int qgemm_options)
 {
-	uint32_t req_dq[1] = {0x1};
+	// setup instruction and data
 	dca_matrix_qgemm_inst_t inst;
-	
   	ervp_task_wait_fx_t task_wait_fx = NULL;
 	dca_generate_matrix_info(mx_info, &(inst.mx));
 	dca_generate_matrix_info(mw_info, &(inst.mw));
 	dca_generate_matrix_info(mo_info, &(inst.mo));
 	inst.option = qgemm_options;
 	flush_cache();
-	mmiox1_inst_push(hwinfo->mmiox_info, &inst, 1, 0);
+	// quantization
+	request_quantize(hwinfo, &inst);
 	task_wait_fx = hwinfo->wait_quant(hwinfo);
   	task_wait_finish(task_wait_fx);
+	// integer GEMM using VTA
 	update_vta_inst_batch(vta_insns, 16);
 	vta_ctrl_write(vta_info, 0x0);
 	task_wait_finish(task_wait_fx);
 	vta_ctrl_write(vta_info, 0x1);
-	flush_cache();
 	task_wait_fx = vta_info->wait_fx;
   	task_wait_finish(task_wait_fx);
-	mmiox1_input_push(hwinfo->mmiox_info, req_dq, 1);
+	// dequantization
+	request_dequant(hwinfo);
 	task_wait_fx = hwinfo->wait_dequant(hwinfo);
 	task_wait_finish(task_wait_fx);
-
 	flush_cache();
 	return task_wait_fx;
 }
