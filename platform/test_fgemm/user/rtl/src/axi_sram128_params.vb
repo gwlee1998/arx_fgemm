@@ -1,0 +1,23 @@
+localparam CAPACITY = 32768;  // in bytes
+localparam CAPA_PER_PORT = 16384;  // in bytes
+localparam CELL_WIDTH = BW_AXI_DATA; // MUST greater than or equal to BW_AXI_DATA
+localparam CELL_ARRAY_WIDTH = 512;
+// localparam CELL_SIZE = 
+
+`include "ervp_log_util.vf"
+`include "ervp_bitwidth_util.vf"
+
+localparam BW_BYTE_WEN = `NUM_BYTE(CELL_WIDTH);
+localparam BW_CELL_ARRAY_BYTE_WEN = `NUM_BYTE(CELL_ARRAY_WIDTH);
+localparam CELL_ARRAY_TOTAL_DEPTH = `DIVIDERU(CAPA_PER_PORT,BW_BYTE_WEN);
+localparam BW_CELL_ARRAY_ROW_INDEX = REQUIRED_BITWIDTH_INDEX(CELL_ARRAY_TOTAL_DEPTH);
+
+localparam NUM_AXI2RAM_PORT = `DIVIDERU(CAPACITY,CAPA_PER_PORT);
+localparam NUM_CELL_PER_PORT = `DIVIDERU(CELL_ARRAY_WIDTH,CELL_WIDTH);
+
+localparam CELL_SIZE = `DIVIDERU(CAPA_PER_PORT,NUM_CELL_PER_PORT);  // in bytes
+localparam CELL_DEPTH = `DIVIDERU(CELL_SIZE,BW_BYTE_WEN);
+localparam BW_CELL_INDEX = REQUIRED_BITWIDTH_INDEX(CELL_DEPTH);
+
+localparam BW_BANK = REQUIRED_BITWIDTH_INDEX(NUM_CELL_PER_PORT);
+localparam BW_ROW  = BW_CELL_ARRAY_ROW_INDEX - BW_BANK;
