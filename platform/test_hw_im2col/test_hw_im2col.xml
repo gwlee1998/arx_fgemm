@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<rvx>
+	<platform>
+		<name>test_hw_im2col</name>
+		<status>described</status>
+		<spec>
+			<define>
+				<name>sram_size</name>
+				<value>64kB</value>
+			</define>
+			<define>
+				<name>num_lock_user</name>
+				<value>1</value>
+			</define>
+			<define>
+				<name>use_profiling</name>
+				<value type="bool">True</value>
+			</define>
+			<define>
+				<name>include_timer</name>
+				<value type="bool">True</value>
+			</define>
+			<define>
+				<name>include_slow_dram</name>
+				<value type="bool">True</value>
+			</define>
+			<define>
+				<name>num_led_checker</name>
+				<value>1</value>
+			</define>
+		</spec>
+
+		<ip_instance>
+			<name>i_main_core</name>
+			<library_name>rvc_orca</library_name>
+    		</ip_instance>
+		<ip_instance>
+			<name>i_IM2COL_ENGINE</name>
+			<library_name>user_slaveif_axi_clkin</library_name>
+			<parameter>
+				<id>SIZE_OF_MEMORYMAP</id>
+				<value>132kB</value>
+			</parameter>
+			<parameter>
+				<id>BW_AXI_TID</id>
+				<value>`REQUIRED_BW_OF_SLAVE_TID</value>
+			</parameter>
+			<parameter>
+				<id>BW_ADDR</id>
+				<value>32</value>
+			</parameter>
+			<parameter>
+				<id>BW_DATA</id>
+				<value>32</value>
+			</parameter>
+		</ip_instance>
+		<!-- <ip_instance>
+			<name>i_REQUANT_ENGINE</name>
+			<library_name>user_slaveif_axi_clkin</library_name>
+			<parameter>
+					<id>SIZE_OF_MEMORYMAP</id>
+					<value>68kB</value>
+			</parameter>
+			<parameter>
+					<id>BW_AXI_TID</id>
+					<value>`REQUIRED_BW_OF_SLAVE_TID</value>
+			</parameter>
+			<parameter>
+					<id>BW_ADDR</id>
+					<value>32</value>
+			</parameter>
+			<parameter>
+					<id>BW_DATA</id>
+					<value>32</value>
+			</parameter>
+			</ip_instance> -->
+    <clock_info>
+      <define>
+			<name>clk_system</name>
+			<value type="dec">50000000</value>
+		</define>
+		<define>
+			<name>clk_network</name>
+			<value type="dec">50000000</value>
+		</define>
+    </clock_info>
+
+    <sw_define>
+      <!-- <caching_most>True</caching_most> -->
+      <!-- <check_vta>True</check_vta> -->
+    </sw_define>
+
+	</platform>
+</rvx>
+
