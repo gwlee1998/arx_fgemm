@@ -545,7 +545,7 @@ module DCA_MATRIX_QGEMM_MMIOX_MLSU
 	assign dq_go_load = (dq_state==S_IDLE) & (control_rmx_input_fifo_rready) && (~i_qdq_controller_scl_busy);
 	assign dq_go_exec = (dq_state == S_LOAD) & (sram2dq_read_last);
 	assign dq_go_store= (dq_state == S_EXEC) & (~i_qdq_controller_dq_busy);
-	assign dq_go_idle = (dq_state == S_STORE) & control_rmx_output_fifo_wready;
+	assign dq_go_idle = (dq_state == S_STORE) & i_moreg2store_storereg_wready;
 
 	assign mx_sinst_wvalid = q_go_load;
 	assign mw_sinst_wvalid = q_go_load;
